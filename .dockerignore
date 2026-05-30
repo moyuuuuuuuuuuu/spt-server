@@ -2,6 +2,7 @@
 
 !Dockerfile
 !.dockerignore
+!.env.example
 !docker-compose.yml
 !README-Docker.md
 !docker/
