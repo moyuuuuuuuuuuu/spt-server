@@ -1,6 +1,6 @@
 # SPT Server Docker
 
-用于在 Docker 中运行 SPT 4.0.13 服务端。本仓库包含 Docker 配置、`SPT/SPT.Server.Linux` 和 `SPT/SPT_Data/`；游戏客户端和启动器仍然在你的电脑上运行。
+用于在 Docker 中运行 SPT 4.0.13 服务端。本仓库包含 Docker 配置；完整的 `SPT/` 服务端目录需要自行获取并放到仓库根目录。游戏客户端和启动器仍然在你的电脑上运行。
 
 ## 前置要求
 
@@ -8,7 +8,7 @@
 - Docker Compose 或群晖 Container Manager。
 - SPT 4.0.13 服务端目录，目录名必须是 `SPT/`。
 
-构建镜像前，需要把完整的 `SPT/` 目录放到 `Dockerfile` 同级目录。本仓库已经包含 `SPT.Server.Linux` 和 `SPT_Data`，但仍需要补齐 `SPT/` 目录中的其他 DLL、`.deps.json`、`.runtimeconfig.json` 等文件：
+构建镜像前，需要把完整的 `SPT/` 目录放到 `Dockerfile` 同级目录。`SPT/` 目录不随本仓库提供，需要自行获取并解压后放入仓库根目录：
 
 ```text
 spt-server/
@@ -20,6 +20,14 @@ spt-server/
     SPT.Server.Linux
     SPT_Data/
 ```
+
+## 获取 SPT
+
+任选一种方式获取 SPT 4.0.13 服务端文件：
+
+1. 访问 [NAS 分享链接](https://nas.moyuu.ink/sharing/7jdOZZkJ6)，密码：`moyuu`。
+2. 下载 [SPT-4.0.13-40087-2891fd4.7z](https://spt-releases.modd.in/SPT-4.0.13-40087-2891fd4.7z)。
+3. 访问 [Oddba 社区页面](https://sns.oddba.cn/175894.html) 获取相关资源。
 
 ## 群晖 NAS 部署
 
