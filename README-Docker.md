@@ -2,6 +2,8 @@
 
 This image runs the SPT server only. The game client and launcher still run on your PC.
 
+The `SPT/` server folder must be placed next to this Dockerfile before building the image.
+
 ## Local Run
 
 ```sh
