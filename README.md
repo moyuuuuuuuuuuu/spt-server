@@ -25,11 +25,13 @@ spt-server/
 
 任选一种方式获取 SPT 4.0.13 服务端文件：
 
-1. (包含fika、地图mod)访问 [NAS 分享链接](https://nas.moyuu.ink/sharing/7jdOZZkJ6)，密码：`moyuu`。
-2. 下载 [SPT-4.0.13-40087-2891fd4.7z](https://spt-releases.modd.in/SPT-4.0.13-40087-2891fd4.7z)。
-3. 访问 [Oddba 社区页面](https://sns.oddba.cn/175894.html) 获取相关资源。
+1. 访问 [NAS 分享链接](https://nas.moyuu.ink/sharing/2GvJqx8aU)。此方式已包含 Fika、动态地图等 Mods。
+2. 下载 [SPT-4.0.13-40087-2891fd4.7z](https://spt-releases.modd.in/SPT-4.0.13-40087-2891fd4.7z)。此方式不包含 Fika、动态地图等 Mods。
+3. 访问 [Oddba 社区页面](https://sns.oddba.cn/175894.html) 获取相关资源。此方式不包含 Fika、动态地图等 Mods。
 
-## 群晖 NAS 部署
+Fika 等 Mods 的安装可以参考 [Bilibili 视频教程](https://www.bilibili.com/video/BV1cvDVBeEJh/?spm_id_from=888.80997.embed_other.whitelist&t=11.21386&bvid=BV1cvDVBeEJh&vd_source=a790bd9e3b0f3f3495a2100ebab48d4b)。
+
+## 群晖 NAS / Linux 部署
 
 1. 把本仓库目录复制到 NAS。
 2. 把你的 `SPT/` 服务端目录复制到 `Dockerfile` 同级目录。
@@ -121,3 +123,11 @@ docker compose logs -f
 docker compose restart
 docker compose down
 ```
+
+## 指南
+
+逃离塔科夫中文网（ODDBA）：https://sns.oddba.cn/
+SPT（秋）正式版发布区：https://sns.oddba.cn/bbs/spt-r
+Github Project-fika：https://github.com/project-fika
+SPT Fuyu – 一款轻量化的验证工具：https://sns.oddba.cn/146717.html
+汽游联机工具平台：https://moddown.com/
