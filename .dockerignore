@@ -1,0 +1,13 @@
+*
+
+!Dockerfile
+!.dockerignore
+!docker-compose.yml
+!README-Docker.md
+!docker/
+!docker/**
+!SPT/
+!SPT/**
+
+SPT/user/
+spt-user/
