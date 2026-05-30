@@ -25,7 +25,7 @@ spt-server/
 
 任选一种方式获取 SPT 4.0.13 服务端文件：
 
-1. 访问 [NAS 分享链接](https://nas.moyuu.ink/sharing/7jdOZZkJ6)，密码：`moyuu`。
+1. (包含fika、地图mod)访问 [NAS 分享链接](https://nas.moyuu.ink/sharing/7jdOZZkJ6)，密码：`moyuu`。
 2. 下载 [SPT-4.0.13-40087-2891fd4.7z](https://spt-releases.modd.in/SPT-4.0.13-40087-2891fd4.7z)。
 3. 访问 [Oddba 社区页面](https://sns.oddba.cn/175894.html) 获取相关资源。
 
