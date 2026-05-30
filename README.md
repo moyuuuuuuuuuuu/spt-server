@@ -126,8 +126,8 @@ docker compose down
 
 ## 指南
 
-逃离塔科夫中文网（ODDBA）：https://sns.oddba.cn/
-SPT（秋）正式版发布区：https://sns.oddba.cn/bbs/spt-r
-Github Project-fika：https://github.com/project-fika
-SPT Fuyu – 一款轻量化的验证工具：https://sns.oddba.cn/146717.html
-汽游联机工具平台：https://moddown.com/
+- 逃离塔科夫中文网（ODDBA）：https://sns.oddba.cn/
+- SPT（秋）正式版发布区：https://sns.oddba.cn/bbs/spt-r
+- Github Project-fika：https://github.com/project-fika
+- SPT Fuyu – 一款轻量化的验证工具：https://sns.oddba.cn/146717.html
+- 汽游联机工具平台：https://moddown.com/
