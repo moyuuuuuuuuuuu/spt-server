@@ -25,11 +25,16 @@ spt-server/
 
 1. 把本仓库目录复制到 NAS。
 2. 把你的 `SPT/` 服务端目录复制到 `Dockerfile` 同级目录。
-3. 编辑 `docker-compose.yml`。
-4. 把 `SPT_BACKEND_IP` 改成你的 NAS 局域网 IP，例如：
+3. 复制环境变量模板：
 
-```yaml
-SPT_BACKEND_IP: 192.168.1.20
+```sh
+cp .env.example .env
+```
+
+4. 编辑 `.env`，把 `SPT_BACKEND_IP` 改成你的 NAS 局域网 IP，例如：
+
+```env
+SPT_BACKEND_IP=192.168.1.20
 ```
 
 5. 在群晖 Container Manager 中以 Compose 项目启动。
@@ -37,6 +42,7 @@ SPT_BACKEND_IP: 192.168.1.20
 如果你习惯用 SSH，也可以在目录内执行：
 
 ```sh
+cp .env.example .env
 docker compose up -d --build
 ```
 
@@ -49,6 +55,7 @@ http://<NAS局域网IP>:6969
 ## 本地运行
 
 ```sh
+cp .env.example .env
 docker compose up -d --build
 ```
 
@@ -70,6 +77,12 @@ volumes:
 ```
 
 ## 环境变量
+
+运行参数从 `.env` 文件读取。第一次部署时，先复制模板：
+
+```sh
+cp .env.example .env
+```
 
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |
