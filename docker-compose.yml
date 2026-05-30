@@ -1,0 +1,19 @@
+services:
+  spt-server:
+    build:
+      context: .
+    image: spt-server:4.0.13
+    container_name: spt-server
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      SPT_IP: 0.0.0.0
+      SPT_PORT: 6969
+      # On Synology, set this to your NAS LAN IP, for example 192.168.1.20.
+      SPT_BACKEND_IP: ${SPT_BACKEND_IP:-127.0.0.1}
+      SPT_BACKEND_PORT: 6969
+    ports:
+      - "6969:6969"
+    volumes:
+      - ./spt-user:/app/user
