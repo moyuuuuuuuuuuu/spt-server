@@ -1,14 +1,14 @@
 # SPT Server Docker
 
-Run the SPT 4.0.13 server in Docker. This repository contains Docker files only; the game client and launcher still run on your PC.
+用于在 Docker 中运行 SPT 4.0.13 服务端。本仓库只包含 Docker 相关文件；游戏客户端和启动器仍然在你的电脑上运行。
 
-## Requirements
+## 前置要求
 
-- Intel/AMD x86_64 host. `SPT/SPT.Server.Linux` is not suitable for ARM Synology NAS models.
-- Docker Compose or Synology Container Manager.
-- The SPT 4.0.13 server folder named `SPT/`.
+- Intel/AMD x86_64 主机。`SPT/SPT.Server.Linux` 不适合 ARM 架构的群晖 NAS。
+- Docker Compose 或群晖 Container Manager。
+- SPT 4.0.13 服务端目录，目录名必须是 `SPT/`。
 
-Before building, place the `SPT/` folder next to `Dockerfile`:
+构建镜像前，把 `SPT/` 目录放到 `Dockerfile` 同级目录：
 
 ```text
 spt-server/
@@ -21,79 +21,79 @@ spt-server/
     SPT_Data/
 ```
 
-## Synology NAS
+## 群晖 NAS 部署
 
-1. Copy this repository folder to the NAS.
-2. Copy your `SPT/` server folder into the same directory as `Dockerfile`.
-3. Edit `docker-compose.yml`.
-4. Set `SPT_BACKEND_IP` to your NAS LAN IP:
+1. 把本仓库目录复制到 NAS。
+2. 把你的 `SPT/` 服务端目录复制到 `Dockerfile` 同级目录。
+3. 编辑 `docker-compose.yml`。
+4. 把 `SPT_BACKEND_IP` 改成你的 NAS 局域网 IP，例如：
 
 ```yaml
 SPT_BACKEND_IP: 192.168.1.20
 ```
 
-5. Start the stack in Synology Container Manager as a Compose project.
+5. 在群晖 Container Manager 中以 Compose 项目启动。
 
-If you prefer SSH:
+如果你习惯用 SSH，也可以在目录内执行：
 
 ```sh
 docker compose up -d --build
 ```
 
-After startup, the server should be reachable from your PC at:
+启动后，电脑上的客户端应连接：
 
 ```text
-http://<NAS_LAN_IP>:6969
+http://<NAS局域网IP>:6969
 ```
 
-## Local Run
+## 本地运行
 
 ```sh
 docker compose up -d --build
 ```
 
-The server listens on:
+服务端监听地址：
 
 ```text
 http://127.0.0.1:6969
 ```
 
-## Persistent Data
+## 持久化数据
 
-`./spt-user` is mounted to `/app/user` inside the container. Keep this folder when rebuilding, updating, or replacing the image.
+`./spt-user` 会挂载到容器内的 `/app/user`。重建、升级或替换镜像时，请保留这个目录。
 
-The compose file uses:
+Compose 配置里对应的是：
 
 ```yaml
 volumes:
   - ./spt-user:/app/user
 ```
 
-## Environment Variables
+## 环境变量
 
-| Variable | Default | Purpose |
+| 变量 | 默认值 | 说明 |
 | --- | --- | --- |
-| `SPT_IP` | `0.0.0.0` | Container listen address. Keep this as `0.0.0.0`. |
-| `SPT_PORT` | `6969` | Container listen port. |
-| `SPT_BACKEND_IP` | `127.0.0.1` | Address returned to the client. On Synology, set this to the NAS LAN IP. |
-| `SPT_BACKEND_PORT` | `6969` | Backend port returned to the client. |
+| `SPT_IP` | `0.0.0.0` | 容器内监听地址，保持 `0.0.0.0` 即可。 |
+| `SPT_PORT` | `6969` | 容器内监听端口。 |
+| `SPT_BACKEND_IP` | `127.0.0.1` | 返回给客户端的服务端地址。部署到群晖时必须改成 NAS 局域网 IP。 |
+| `SPT_BACKEND_PORT` | `6969` | 返回给客户端的服务端端口。 |
 
-The entrypoint updates `SPT/SPT_Data/configs/http.json` on container startup using these values.
+容器启动时，`docker/entrypoint.sh` 会用这些环境变量更新 `SPT/SPT_Data/configs/http.json`。
 
-## Upgrade Notes
+## 升级说明
 
-When upgrading SPT:
+升级 SPT 时：
 
-1. Stop the container.
-2. Replace the `SPT/` folder with the new server version.
-3. Keep `./spt-user`.
-4. Rebuild and start:
+1. 停止容器。
+2. 用新版本替换 `SPT/` 目录。
+3. 保留 `./spt-user`。
+4. 重新构建并启动：
 
 ```sh
 docker compose up -d --build
 ```
 
-## Useful Commands
+## 常用命令
 
 ```sh
 docker compose logs -f
