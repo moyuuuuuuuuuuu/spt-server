@@ -1,6 +1,6 @@
 # SPT Server Docker
 
-用于在 Docker 中运行 SPT 4.0.13 服务端。本仓库只包含 Docker 相关文件；游戏客户端和启动器仍然在你的电脑上运行。
+用于在 Docker 中运行 SPT 4.0.13 服务端。本仓库包含 Docker 配置、`SPT/SPT.Server.Linux` 和 `SPT/SPT_Data/`；游戏客户端和启动器仍然在你的电脑上运行。
 
 ## 前置要求
 
@@ -8,7 +8,7 @@
 - Docker Compose 或群晖 Container Manager。
 - SPT 4.0.13 服务端目录，目录名必须是 `SPT/`。
 
-构建镜像前，把 `SPT/` 目录放到 `Dockerfile` 同级目录：
+构建镜像前，需要把完整的 `SPT/` 目录放到 `Dockerfile` 同级目录。本仓库已经包含 `SPT.Server.Linux` 和 `SPT_Data`，但仍需要补齐 `SPT/` 目录中的其他 DLL、`.deps.json`、`.runtimeconfig.json` 等文件：
 
 ```text
 spt-server/
