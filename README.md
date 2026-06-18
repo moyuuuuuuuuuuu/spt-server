@@ -31,6 +31,24 @@ spt-server/
 
 Fika 等 Mods 的安装可以参考 [Bilibili 视频教程](https://www.bilibili.com/video/BV1cvDVBeEJh/?spm_id_from=888.80997.embed_other.whitelist&t=11.21386&bvid=BV1cvDVBeEJh&vd_source=a790bd9e3b0f3f3495a2100ebab48d4b)。
 
+## Fika Headless Client
+
+本仓库只运行 SPT 服务端。Fika Headless Client 属于客户端侧插件，需要安装到单独的 SPT 客户端目录，不放进 Docker 容器内的服务端目录。
+
+当前服务端版本是 SPT 4.0.13，对应 EFT `0.16.9.40087`。建议固定使用以下版本：
+
+- [Fika Release 2.3.1](https://github.com/project-fika/Fika-Plugin/releases/download/v2.3.1/Fika.Release.2.3.1.zip)，客户端 Fika 插件，release 说明兼容 EFT `0.16.9.40087`。
+- [Fika Headless 1.4.13](https://github.com/project-fika/Fika-Headless/releases/download/v1.4.13/Fika.Headless.1.4.13.zip)，Headless Client 插件，需要先安装 Fika 插件。
+- [Fika Headless Manager](https://github.com/project-fika/Fika-Headless-Manager/releases/latest)，可选的 Headless Client 启动器。
+
+安装顺序：
+
+1. 准备一份单独的 SPT 4.0.13 客户端目录作为 Headless Client，不要和日常游玩的客户端混用。
+2. 先把 `Fika.Release.2.3.1.zip` 解压到这个客户端根目录。
+3. 再把 `Fika.Headless.1.4.13.zip` 解压到同一个客户端根目录。
+4. 可选安装 Fika Headless Manager，用它启动和管理 Headless Client。
+5. 启动前确认本仓库的 Docker 服务端已经运行，且客户端连接地址指向 `.env` 里的 `SPT_BACKEND_IP:SPT_BACKEND_PORT`。
+
 ## 群晖 NAS / Linux 部署
 
 1. 把本仓库目录复制到 NAS。
