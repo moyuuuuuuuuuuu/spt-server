@@ -33,21 +33,28 @@ Fika 等 Mods 的安装可以参考 [Bilibili 视频教程](https://www.bilibili
 
 ## Fika Headless Client
 
-本仓库只运行 SPT 服务端。Fika Headless Client 属于客户端侧插件，需要安装到单独的 SPT 客户端目录，不放进 Docker 容器内的服务端目录。
+目标拓扑：NAS 上运行本仓库的 SPT/Fika Server，同时在 NAS 上另起一个独立的 Fika Headless Client 作为战局主控。其他玩家客户端连接 NAS 上的 SPT/Fika Server，并加入由 Headless Client 托管的战局。
 
-当前服务端版本是 SPT 4.0.13，对应 EFT `0.16.9.40087`。建议固定使用以下版本：
+需要注意：Fika Headless Client 可以运行在 Linux/NAS 上，但它仍然是客户端侧 BepInEx 插件，不是 `SPT.Server.Linux` 服务端插件。因此它不放进当前 `spt-server` Docker 容器内，而是放在 NAS 上单独的 SPT 客户端目录中运行。后续如果要 Docker 化 Headless Client，建议做成独立的 `headless` service，而不是和 `spt-server` 合并。
 
-- [Fika Release 2.3.1](https://github.com/project-fika/Fika-Plugin/releases/download/v2.3.1/Fika.Release.2.3.1.zip)，客户端 Fika 插件，release 说明兼容 EFT `0.16.9.40087`。
+当前服务端版本是 SPT 4.0.13，对应 EFT `0.16.9.40087`。当前使用以下 Fika 版本：
+
+- [Fika Release 2.2.6](https://github.com/project-fika/Fika-Plugin/releases/download/v2.2.6/Fika.Release.2.2.6.zip)，客户端 Fika 插件，release 说明兼容 EFT `0.16.9.40087`。
+- [Fika Server Release 2.2.6](https://github.com/project-fika/Fika-Server-CSharp/releases/download/v2.2.6/Fika.Server.Release.2.2.6.zip)，服务端 Fika 插件，需要放入 `SPT/` 服务端目录后再构建 Docker 镜像。
 - [Fika Headless 1.4.13](https://github.com/project-fika/Fika-Headless/releases/download/v1.4.13/Fika.Headless.1.4.13.zip)，Headless Client 插件，需要先安装 Fika 插件。
 - [Fika Headless Manager](https://github.com/project-fika/Fika-Headless-Manager/releases/latest)，可选的 Headless Client 启动器。
 
-安装顺序：
+NAS 主控部署顺序：
 
-1. 准备一份单独的 SPT 4.0.13 客户端目录作为 Headless Client，不要和日常游玩的客户端混用。
-2. 先把 `Fika.Release.2.3.1.zip` 解压到这个客户端根目录。
-3. 再把 `Fika.Headless.1.4.13.zip` 解压到同一个客户端根目录。
-4. 可选安装 Fika Headless Manager，用它启动和管理 Headless Client。
-5. 启动前确认本仓库的 Docker 服务端已经运行，且客户端连接地址指向 `.env` 里的 `SPT_BACKEND_IP:SPT_BACKEND_PORT`。
+1. 把 `Fika.Server.Release.2.2.6.zip` 解压到本仓库根目录的 `SPT/` 服务端目录，再重新构建 Docker 镜像。
+2. 在 NAS 上准备一份单独的 SPT 4.0.13 客户端目录，例如 `SPT-Headless/`，作为 Headless Client，不要和日常游玩的客户端混用。
+3. 把 `Fika.Release.2.2.6.zip` 解压到这个客户端根目录。
+4. 再把 `Fika.Headless.1.4.13.zip` 解压到同一个客户端根目录。
+5. 将 Headless Client 的服务端地址配置为 `http://<NAS局域网IP>:6969`，也就是 `.env` 中的 `SPT_BACKEND_IP:SPT_BACKEND_PORT`。
+6. 先启动本仓库的 `spt-server` 容器，再启动 NAS 上的 Headless Client。
+7. 其他玩家客户端同样连接 `http://<NAS局域网IP>:6969`，战局由 NAS 上的 Headless Client 托管。
+
+当前仓库暂不包含 Headless Client 的 Docker service。先按独立目录部署，确认能稳定托管战局后，再把 `SPT-Headless/` 封装成单独容器。
 
 ## 群晖 NAS / Linux 部署
 
