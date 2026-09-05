@@ -1,14 +1,14 @@
 # SPT Server Docker
 
-用于在 Docker 中运行 SPT 4.0.13 服务端。本仓库包含 Docker 配置；完整的 `SPT/` 服务端目录需要自行获取并放到仓库根目录。游戏客户端和启动器仍然在你的电脑上运行。
+运行 SPT 4.1.3 Linux 服务端，使用 .NET / ASP.NET Core 10。适用于 Intel/AMD x86_64 的 Docker 主机和群晖 NAS。游戏客户端、启动器及 BepInEx 客户端插件仍在电脑上运行。
+
+本仓库只提供 Docker 配置，完整的 `SPT_Runtime/` 服务端文件需要自行获取，不随 Git 仓库提供。
 
 ## 前置要求
 
-- Intel/AMD x86_64 主机。`SPT/SPT.Server.Linux` 不适合 ARM 架构的群晖 NAS。
+- Intel/AMD x86_64 主机。
 - Docker Compose 或群晖 Container Manager。
-- SPT 4.0.13 服务端目录，目录名必须是 `SPT/`。
-
-构建镜像前，需要把完整的 `SPT/` 目录放到 `Dockerfile` 同级目录。`SPT/` 目录不随本仓库提供，需要自行获取并解压后放入仓库根目录：
+- 完整的 SPT 4.1.3 服务端目录 `SPT_Runtime/`。
 
 ```text
 spt-server/
@@ -16,130 +16,60 @@ spt-server/
   docker-compose.yml
   docker/
     entrypoint.sh
-  SPT/
+  SPT_Runtime/
     SPT.Server.Linux
     SPT_Data/
 ```
 
-## 获取 SPT
-
-任选一种方式获取 SPT 4.0.13 服务端文件：
-
-1. 访问 [NAS 分享链接](https://nas.moyuu.ink/sharing/2GvJqx8aU)。此方式已包含 Fika、动态地图等 Mods。
-2. 下载 [SPT-4.0.13-40087-2891fd4.7z](https://spt-releases.modd.in/SPT-4.0.13-40087-2891fd4.7z)。此方式不包含 Fika、动态地图等 Mods。
-3. 访问 [Oddba 社区页面](https://sns.oddba.cn/175894.html) 获取相关资源。此方式不包含 Fika、动态地图等 Mods。
-
-Fika 等 Mods 的安装可以参考 [Bilibili 视频教程](https://www.bilibili.com/video/BV1cvDVBeEJh/?spm_id_from=888.80997.embed_other.whitelist&t=11.21386&bvid=BV1cvDVBeEJh&vd_source=a790bd9e3b0f3f3495a2100ebab48d4b)。
-
-## Fika Headless Client
-
-目标拓扑：NAS 上运行本仓库的 SPT/Fika Server，同时在 NAS 上另起一个独立的 Fika Headless Client 作为战局主控。其他玩家客户端连接 NAS 上的 SPT/Fika Server，并加入由 Headless Client 托管的战局。
-
-需要注意：Fika Headless Client 可以运行在 Linux/NAS 上，但它仍然是客户端侧 BepInEx 插件，不是 `SPT.Server.Linux` 服务端插件。因此它不放进当前 `spt-server` Docker 容器内，而是放在 NAS 上单独的 SPT 客户端目录中运行。后续如果要 Docker 化 Headless Client，建议做成独立的 `headless` service，而不是和 `spt-server` 合并。
-
-当前服务端版本是 SPT 4.0.13，对应 EFT `0.16.9.40087`。当前使用以下 Fika 版本：
-
-- [Fika Release 2.2.6](https://github.com/project-fika/Fika-Plugin/releases/download/v2.2.6/Fika.Release.2.2.6.zip)，客户端 Fika 插件，release 说明兼容 EFT `0.16.9.40087`。
-- [Fika Server Release 2.2.6](https://github.com/project-fika/Fika-Server-CSharp/releases/download/v2.2.6/Fika.Server.Release.2.2.6.zip)，服务端 Fika 插件，需要放入 `SPT/` 服务端目录后再构建 Docker 镜像。
-- [Fika Headless 1.4.13](https://github.com/project-fika/Fika-Headless/releases/download/v1.4.13/Fika.Headless.1.4.13.zip)，Headless Client 插件，需要先安装 Fika 插件。
-- [Fika Headless Manager](https://github.com/project-fika/Fika-Headless-Manager/releases/latest)，可选的 Headless Client 启动器。
-
-NAS 主控部署顺序：
-
-1. 把 `Fika.Server.Release.2.2.6.zip` 解压到本仓库根目录的 `SPT/` 服务端目录，再重新构建 Docker 镜像。
-2. 在 NAS 上准备一份单独的 SPT 4.0.13 客户端目录，例如 `SPT-Headless/`，作为 Headless Client，不要和日常游玩的客户端混用。
-3. 把 `Fika.Release.2.2.6.zip` 解压到这个客户端根目录。
-4. 再把 `Fika.Headless.1.4.13.zip` 解压到同一个客户端根目录。
-5. 将 Headless Client 的服务端地址配置为 `http://<NAS局域网IP>:6969`，也就是 `.env` 中的 `SPT_BACKEND_IP:SPT_BACKEND_PORT`。
-6. 先启动本仓库的 `spt-server` 容器，再启动 NAS 上的 Headless Client。
-7. 其他玩家客户端同样连接 `http://<NAS局域网IP>:6969`，战局由 NAS 上的 Headless Client 托管。
-
-当前仓库暂不包含 Headless Client 的 Docker service。先按独立目录部署，确认能稳定托管战局后，再把 `SPT-Headless/` 封装成单独容器。
-
 ## 群晖 NAS / Linux 部署
 
-1. 把本仓库目录复制到 NAS。
-2. 把你的 `SPT/` 服务端目录复制到 `Dockerfile` 同级目录。
-3. 复制环境变量模板：
+将整个 `4.1.3` 目录复制到主机，保持 `SPT_Runtime/` 与 `Dockerfile` 同级。该目录必须包含完整服务端文件，包括 `SPT.Server.Linux` 和 `SPT_Data/`。
+
+在此目录执行：
 
 ```sh
 cp .env.example .env
 ```
 
-4. 编辑 `.env`，把 `SPT_BACKEND_IP` 改成你的 NAS 局域网 IP，例如：
-
-```env
-SPT_BACKEND_IP=192.168.1.20
-```
-
-5. 在群晖 Container Manager 中以 Compose 项目启动。
-
-如果你习惯用 SSH，也可以在目录内执行：
+Windows PowerShell 使用 `Copy-Item .env.example .env`。编辑 `.env`，将 `SPT_BACKEND_IP` 改为 NAS/服务器局域网 IP，然后启动：
 
 ```sh
-cp .env.example .env
 docker compose up -d --build
+docker compose logs -f
 ```
 
-启动后，电脑上的客户端应连接：
+群晖 Container Manager 也可用此目录创建 Compose 项目。客户端连接 `https://<服务器局域网IP>:6969`。本机默认连接 `https://127.0.0.1:6969`。
 
-```text
-http://<NAS局域网IP>:6969
-```
+## 端口与两个版本同时运行
 
-## 本地运行
+`.env` 的 `SPT_PORT` 是宿主机端口，容器内固定监听 6969，返回客户端的端口会同步更新。若 4.0.13 已占用 6969，将此版本的 `SPT_PORT` 设置为 `6970`，客户端相应连接 `https://<服务器局域网IP>:6970`。
 
-```sh
-cp .env.example .env
-docker compose up -d --build
-```
-
-服务端监听地址：
-
-```text
-http://127.0.0.1:6969
-```
-
-## 持久化数据
-
-`./spt-user` 会挂载到容器内的 `/app/user`。重建、升级或替换镜像时，请保留这个目录。
-
-Compose 配置里对应的是：
-
-```yaml
-volumes:
-  - ./spt-user:/app/user
-```
+Compose 项目名为 `spt-413`，镜像为 `spt-server:4.1.3`。
 
 ## 环境变量
 
-运行参数从 `.env` 文件读取。第一次部署时，先复制模板：
-
-```sh
-cp .env.example .env
-```
-
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |
-| `SPT_IP` | `0.0.0.0` | 容器内监听地址，保持 `0.0.0.0` 即可。 |
-| `SPT_PORT` | `6969` | 容器内监听端口。 |
-| `SPT_BACKEND_IP` | `127.0.0.1` | 返回给客户端的服务端地址。部署到群晖时必须改成 NAS 局域网 IP。 |
-| `SPT_BACKEND_PORT` | `6969` | 返回给客户端的服务端端口。 |
+| `TZ` | `Asia/Shanghai` | 容器时区。 |
+| `SPT_PORT` | `6969` | 宿主机端口，同时作为返回客户端的端口；容器内固定为 6969。 |
+| `SPT_BACKEND_IP` | `127.0.0.1` | 返回客户端的主机地址，NAS 部署时改成 NAS 局域网 IP。 |
 
-容器启动时，`docker/entrypoint.sh` 会用这些环境变量更新 `SPT/SPT_Data/configs/http.json`。
+## 持久化数据与 Mods
 
-## 升级说明
+`./spt-user` 挂载到 `/app/user`，保存该版本的用户数据和服务端 Mods。已有 4.1.3 用户数据可在首次启动前从 `SPT_Runtime/user/` 复制到 `spt-user/`；不会自动复制，也不会打包进镜像。服务端 Mods 放到 `spt-user/mods/`，安装后重启服务端，并确认支持 4.1.3。
 
-升级 SPT 时：
+4.0.13 与 4.1.3 使用各自目录下的 `spt-user`，不要让两个运行中的版本共用存档。跨版本迁移前备份并确认版本兼容性。
 
-1. 停止容器。
-2. 用新版本替换 `SPT/` 目录。
-3. 保留 `./spt-user`。
-4. 重新构建并启动：
+重建镜像时保留 `spt-user/`：
 
 ```sh
+docker compose down
 docker compose up -d --build
 ```
+
+镜像只包含 `SPT_Runtime` 服务端内容，排除客户端启动器、自带 dotnet 目录、日志及用户数据。修改其他服务端配置后需要重新构建镜像；HTTP 地址和端口在启动时由环境变量写入容器配置。
+
+4.1.3 默认使用 HTTPS，首次启动自动在 `spt-user/certs/` 生成自签名证书。浏览器首次访问可能提示证书不受信任；客户端地址也应填写 `https://`。
 
 ## 常用命令
 
@@ -149,10 +79,4 @@ docker compose restart
 docker compose down
 ```
 
-## 指南
-
-- 逃离塔科夫中文网（ODDBA）：https://sns.oddba.cn/
-- SPT（秋）正式版发布区：https://sns.oddba.cn/bbs/spt-r
-- Github Project-fika：https://github.com/project-fika
-- SPT Fuyu – 一款轻量化的验证工具：https://sns.oddba.cn/146717.html
-- 汽游联机工具平台：https://moddown.com/
+英文部署说明见 [README-Docker.md](README-Docker.md)。

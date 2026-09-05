@@ -1,3 +1,10 @@
 .env
-SPT/
+SPT_Runtime/
+BepInEx/
 spt-user/
+*.dll
+.doorstop_version
+doorstop_config.ini
+LICENSE-BEPINEX.txt
+LICENSE-ConfigurationManager.txt
+LICENSE-Modules.txt
